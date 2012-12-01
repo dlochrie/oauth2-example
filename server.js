@@ -13,7 +13,7 @@ var express = require('express')
 
 // hardcoded list of <client id, client secret> tuples
 var myClients = {
- '1': '1secret',
+ 'abc123': 'ssh-secret',
 };
 
 var app = express();
@@ -26,8 +26,7 @@ var app = express();
 // temporary grant storage
 var myGrants = {};
 
-//var myOAP = new OAuth2Provider({crypt_key: 'encryption secret', sign_key: 'signing secret'});
-var myOAP = new OAuth2Provider({crypt_key: 'abc123', sign_key: 'ssh-secret'});
+var myOAP = new OAuth2Provider({crypt_key: 'encryption secret', sign_key: 'signing secret'});
 
 // before showing authorization page, make sure the user is logged in
 myOAP.on('enforce_login', function(req, res, authorize_url, next) {
@@ -170,6 +169,10 @@ app.get('/secret', function(req, res, next) {
     res.writeHead(403);
     res.end('no');
   }
+});
+
+app.get('/user/data', function(req, res, next) {
+	res.end(JSON.stringify({ user_id: 1, name: 'Joe Bob Smith' }));
 });
 
 function escape_entities(s) {
